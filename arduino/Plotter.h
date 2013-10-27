@@ -1,10 +1,11 @@
 #pragma once
 
-#include "Motor.h"
+#include "HBridgeMotor.h"
+#include "SubstepMotor.h"
 
 class Plotter {
 	public:
-		Plotter(unsigned char xPins[4], unsigned char yPins[4], unsigned char penPins[4]);
+		Plotter(unsigned char xPins[2], unsigned char yPins[2], unsigned char penPins[4]);
 
 		void penUp();
 		void penDown();
@@ -12,12 +13,13 @@ class Plotter {
 		void penDecrement();
 
 		void moveTo(float x, float y);
-		const float& x() const;
-		const float& y() const;
+		const float x() const;
+		const float y() const;
 
 	protected:
-	private:	
-		bool m_penState;
+	private:
+		SubstepMotor m_x, m_y;
+		HBridgeMotor m_pen;
 
-		Motor m_pen, m_x, m_y;
+		bool m_penState;
 };

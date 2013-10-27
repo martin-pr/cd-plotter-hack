@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "arduino"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "cpp"
+		}
+	]
+}

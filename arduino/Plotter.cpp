@@ -1,7 +1,14 @@
 #include "Plotter.h"
 
-Plotter::Plotter(unsigned char xPins[4], unsigned char yPins[4], unsigned char penPins[4]) :
-	m_x(xPins, 10), m_y(yPins, 10), m_pen(penPins, 30),
+namespace {
+	// ratio of the scale of the HPGL language to the stepper motor microstep
+	static const float SCALE = 0.75f;
+
+	static const float ACCURACY = 0.25f;
+}
+
+Plotter::Plotter(unsigned char xPins[2], unsigned char yPins[2], unsigned char penPins[4]) :
+	m_x(xPins[0], xPins[1], 1000), m_y(yPins[0], yPins[1], 1000), m_pen(penPins, 65),
 	m_penState(false) {
 }
 
@@ -28,21 +35,21 @@ void Plotter::penDecrement() {
 }
 
 void Plotter::moveTo(float x, float y) {
-	// the plotter's step is 0.075mm; HPGL's step is 0.025 -> divide by 3
-	x /= 3.0f;
-	y /= 3.0f;
-
-	if(x > 500.0f)
-		x = 500.0f;
-	if(y > 500.0f)
-		y = 500.0f;
+	// limit the maximal reach
+	if(x > 1500.0f)
+		x = 1500.0f;
+	if(y > 1500.0f)
+		y = 1500.0f;
 	if(x < 0.0f)
 		x = 0.0f;
 	if(y < 0.0f)
 		y = 0.0f;
 
-	const float xDiff = m_x.state() < x ? 1.0f : -1.0f;
-	const float yDiff = m_y.state() < y ? 1.0f : -1.0f;
+	x /= SCALE;
+	y /= SCALE;
+
+	const float xDiff = m_x.state() < x ? ACCURACY : -ACCURACY;
+	const float yDiff = m_y.state() < y ? ACCURACY : -ACCURACY;
 
 	const float a[2] = {m_x.state(), m_y.state()};
 	float n[2] = {x - m_x.state(), y - m_y.state()};
@@ -87,12 +94,10 @@ void Plotter::moveTo(float x, float y) {
 	m_y.moveTo(y);
 }
 
-const float& Plotter::x() const {
-	// the plotter's step is 0.075mm; HPGL's step is 0.025 -> multiply by 3
-	return m_x.state() * 3.0f;
+const float Plotter::x() const {
+	return m_x.state() * SCALE;
 }
 
-const float& Plotter::y() const {
-	// the plotter's step is 0.075mm; HPGL's step is 0.025 -> multiply by 3
-	return m_y.state() * 3.0f;
+const float Plotter::y() const {
+	return m_y.state() * SCALE;
 }

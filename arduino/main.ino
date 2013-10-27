@@ -17,12 +17,17 @@ unsigned bufferPtr = 0;
 char buffer[64];
 
 Plotter plotter(
-	(unsigned char[4]){12,13,10,11},
-	(unsigned char[4]){9,8,7,6},
-	(unsigned char[4]){5,4,3,2});
+	(unsigned char[2]){2,3},
+	(unsigned char[2]){4,5},
+	(unsigned char[4]){9,8,7,6});
 
 
 void loop() {
+	// plotter.moveTo(0,0);
+	// plotter.moveTo(500,0);
+	// plotter.moveTo(500,500);
+	// plotter.moveTo(0,500);
+
 	while(!Serial.available())
 		;
 
