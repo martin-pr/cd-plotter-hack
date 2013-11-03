@@ -13,7 +13,7 @@ void SubstepMotor::moveTo(const float& value) {
 	digitalWrite(m_dirPin, (diff > 0) != m_reverse);
 	delayMicroseconds(m_motorDelay / 2);
 
-	while(round(m_motorState) != round(value)) {
+	while(round(m_motorState + 1000.0f) != round(value + 1000.0f)) {
 		// update the state
 		m_motorState += diff;
 
