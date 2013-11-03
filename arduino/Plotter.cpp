@@ -8,7 +8,7 @@ namespace {
 }
 
 Plotter::Plotter(unsigned char xPins[2], unsigned char yPins[2], unsigned char penPins[4]) :
-	m_x(xPins[0], xPins[1], 1000), m_y(yPins[0], yPins[1], 1000), m_pen(penPins, 65),
+	m_x(xPins[0], xPins[1], 500), m_y(yPins[0], yPins[1], 500), m_pen(penPins, 65),
 	m_penState(false) {
 }
 
